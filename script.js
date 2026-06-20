@@ -59,7 +59,7 @@ let currentInput = '';
 let firstOperand = null;
 let operator = null;
 let isResultDisplayed = false;
-const message = 'STEINS;GATE  ';
+const message = 'STEINS;GATE';
 
 buttons.forEach(button => {
     button.addEventListener('click', () => {
