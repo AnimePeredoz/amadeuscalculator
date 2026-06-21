@@ -1,6 +1,6 @@
 @charset "UTF-8";
 
-
+/* --- 1. ШРИФТЫ --- */
 @font-face {
     font-family: 'Impact';
     src: url('./fonts/Impact.woff2') format('woff2'),
@@ -21,7 +21,7 @@
     font-display: swap;
 }
 
-
+/* --- 2. ГЛОБАЛЬНЫЙ АДАПТИВ СБРОС --- */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -31,10 +31,9 @@
 body {
     width: 100%;
     min-height: 100vh;
-    overflow-x: hidden;
-
-    padding: 10px;
-
+    overflow: hidden;
+    /* Жестко запрещаем любой скролл */
+    padding: 6px;
 
     background:
         linear-gradient(rgba(255, 255, 255, 0.04) 50%,
@@ -47,14 +46,13 @@ body {
     background-size: 100% 10px, 100% 100% !important;
     background-repeat: repeat, no-repeat !important;
 
-
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
-
+/* --- 3. ЛОАДЕР --- */
 #loader-video-container {
     position: fixed;
     top: 0;
@@ -75,7 +73,7 @@ body {
     object-fit: cover;
 }
 
-
+/* --- 4. АНИМАЦИИ --- */
 @keyframes nixie-flicker {
 
     0%,
@@ -103,88 +101,93 @@ body {
     }
 }
 
-
+/* --- 5. ТЕКСТ ПОДПИСИ --- */
 .inst {
     text-align: center;
     font-family: 'calculator', sans-serif;
     font-style: oblique;
-    margin-bottom: 12px;
+    margin-bottom: 6px;
     color: #a6a6a6;
-    font-size: clamp(13px, 3.5vw, 16px);
+    font-size: clamp(11px, 3vw, 15px);
 }
 
-
+/* --- 6. УЛЬТРА-АДАПТИВНАЯ ОБЕРТКА (Сжимается под любой экран) --- */
 .calculator-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
-
-    max-width: 380px;
+    /* На ПК ширина 360px. На мобилках плавно сжимается, оставляя безопасные отступы */
+    max-width: clamp(265px, 88vw, 360px);
     position: relative;
 }
 
-
+/* --- 7. КОНТЕЙНЕР ДЛЯ СЖАТОГО ЛОГОТИПА --- */
 .logo-container {
     width: 100%;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    margin-top: 10px !important;
-    margin-bottom: 15px !important;
-    padding: 0 5px !important;
+    margin-top: 2px !important;
+    margin-bottom: 8px !important;
+    padding: 0 !important;
     overflow: hidden !important;
 }
 
 .logo-img {
-
-    width: 85% !important;
+    width: 70% !important;
+    /* Уменьшили базовую ширину картинки */
     height: auto !important;
-    max-height: 120px !important;
+    max-height: clamp(50px, 10vh, 90px) !important;
+    /* Логотип станет еще компактнее по вертикали */
     object-fit: contain !important;
-    filter: drop-shadow(0 0 6px #ff6600) drop-shadow(0 0 15px rgba(255, 51, 0, 0.4)) !important;
+    filter: drop-shadow(0 0 5px #ff6600) drop-shadow(0 0 12px rgba(255, 51, 0, 0.4)) !important;
     image-rendering: -webkit-optimize-contrast !important;
 }
 
-
+/* --- 8. ДИСПЛЕЙ (Уменьшенные внутренние зазоры) --- */
 #display:enabled {
-    border: 4px solid #3a2200;
-    border-radius: 12px;
-
-    font-size: clamp(28px, 8.5vw, 48px);
+    border: 3.5px solid #3a2200;
+    border-radius: 10px;
+    /* Шрифт автоматически сжимается до 24px на самых крошечных экранах */
+    font-size: clamp(24px, 8vw, 44px);
     font-family: 'calculator', monospace;
     text-align: right;
-    padding: 10px 20px;
+    padding: 6px 12px;
+    /* Компактные отступы внутри экрана */
     width: 100%;
-    height: clamp(65px, 9vh, 85px);
+    height: clamp(52px, 8.5vh, 75px);
+    /* Уменьшили высоту табло */
     background-color: #050301;
     background-image: none;
     color: #ff6600;
     font-weight: normal;
     text-shadow:
         0 0 2px #ff3300,
-        0 0 8px #ff6600,
-        0 0 15px #ff9900,
-        0 0 25px rgba(255, 102, 0, 0.6);
+        0 0 6px #ff6600,
+        0 0 12px #ff9900,
+        0 0 20px rgba(255, 102, 0, 0.5);
 
-    margin-bottom: 15px;
+    margin-bottom: 8px;
+    /* Минимальный зазор до кнопок */
     box-shadow:
-        inset 0 0 20px rgba(0, 0, 0, 0.9),
-        inset 0 0 15px rgba(255, 68, 0, 0.2),
-        0 4px 10px rgba(0, 0, 0, 0.5);
+        inset 0 0 15px rgba(0, 0, 0, 0.9),
+        inset 0 0 10px rgba(255, 68, 0, 0.2),
+        0 3px 8px rgba(0, 0, 0, 0.5);
 
     position: relative;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
 }
 
+/* Сетка развертки (адаптирована под новую высоту) */
 .calculator-wrapper::before {
     content: "";
     position: absolute;
-    top: 5px;
-    left: 5px;
-    right: 5px;
-    height: calc(clamp(65px, 9vh, 85px) - 10px);
-    border-radius: 6px;
+    top: 4px;
+    left: 4px;
+    right: 4px;
+    height: calc(clamp(52px, 8.5vh, 75px) - 8px);
+    border-radius: 5px;
     pointer-events: none;
     z-index: 10;
 
@@ -200,44 +203,47 @@ body {
     background-size: 100% 100%, 3px 3px, 3px 3px;
 }
 
+/* --- 9. СЕТКА КНОПОК (Максимально плотная) --- */
 .calculator {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(5, 1fr);
-    gap: 12px;
+    gap: clamp(6px, 2vw, 10px);
+    /* Динамический зазор между кнопками */
 
     width: 100%;
-    aspect-ratio: 4 / 4.5;
-
+    aspect-ratio: 4 / 4.4;
+    /* Слегка прижали сетку по вертикали */
 
     background-color: #0d0a07;
-    border: 5px solid #2b1a03;
-    border-radius: 12px;
-    padding: 14px;
-
+    border: 4px solid #2b1a03;
+    border-radius: 10px;
+    padding: clamp(8px, 2.5vw, 12px);
+    /* Плотный внутренний отступ корпуса */
 
     box-shadow:
-        0 15px 35px rgba(0, 0, 0, 0.8),
-        inset 0 0 15px rgba(0, 0, 0, 0.6);
+        0 12px 25px rgba(0, 0, 0, 0.8),
+        inset 0 0 12px rgba(0, 0, 0, 0.6);
 }
 
-
+/* --- 10. КНОПКИ --- */
 .btn {
-    border: 2.5px solid #592500 !important;
-    border-radius: 8px !important;
+    border: 2px solid #592500 !important;
+    border-radius: 5px !important;
+    /* Острые компактные углы */
 
     background-color: #050301 !important;
     color: #592500 !important;
     font-family: calculator, Impact, sans-serif !important;
-
-    font-size: clamp(20px, 6vw, 30px) !important;
+    /* Текст внутри кнопок теперь сжимается до компактных 16px */
+    font-size: clamp(16px, 5.5vw, 26px) !important;
     font-weight: bold !important;
     -webkit-text-stroke: transparent !important;
     text-shadow: none !important;
 
     box-shadow:
-        0 0 4px rgba(255, 102, 0, 0.15),
-        inset 0 0 4px rgba(255, 68, 0, 0.1) !important;
+        0 0 3px rgba(255, 102, 0, 0.1),
+        inset 0 0 3px rgba(255, 68, 0, 0.1) !important;
 
     display: flex !important;
     align-items: center !important;
@@ -256,18 +262,18 @@ body {
     color: #ff6600 !important;
     text-shadow:
         0 0 2px #ff3300,
-        0 0 6px #ff6600,
-        0 0 12px #ff9900 !important;
+        0 0 5px #ff6600,
+        0 0 8px #ff9900 !important;
 
     box-shadow:
-        0 0 4px #ff3300,
-        0 0 10px #ff6600,
-        0 0 18px rgba(255, 153, 0, 0.6),
-        inset 0 0 8px rgba(255, 68, 0, 0.4) !important;
+        0 0 3px #ff3300,
+        0 0 6px #ff6600,
+        0 0 10px rgba(255, 153, 0, 0.5),
+        inset 0 0 5px rgba(255, 68, 0, 0.4) !important;
 }
 
 .btn:active {
-    transform: scale(0.95) !important;
+    transform: scale(0.94) !important;
 }
 
 #btnr {
@@ -275,50 +281,43 @@ body {
     width: 100% !important;
 }
 
-
+/* --- 11. СВЕТЯЩИЙСЯ ТЕКСТ ОШИБКИ И СНОСОК --- */
 .glow-text {
     color: #ff6600 !important;
     text-shadow:
         0 0 2px #ff3300,
-        0 0 6px #ff6600,
-        0 0 12px #ff9900,
-        0 0 20px rgba(255, 102, 0, 0.5) !important;
+        0 0 5px #ff6600,
+        0 0 10px #ff9900,
+        0 0 15px rgba(255, 102, 0, 0.5) !important;
 
     font-family: calculator, 'Arial', sans-serif !important;
     font-weight: bold;
     -webkit-text-stroke: #000000 0.2px;
-    font-size: clamp(14px, 4vw, 20px);
+    font-size: clamp(12px, 3.5vw, 18px);
     transition: text-shadow 0.3s ease, color 0.3s ease;
 }
 
-.glow-text:hover {
-    color: #ffaa00 !important;
-    text-shadow:
-        0 0 2px #ff6600,
-        0 0 10px #ffaa00,
-        0 0 20px #ffffff !important;
-}
-
-
-@media (max-width: 330px) {
+/* --- 12. ЭКСТРЕННОЕ СЖАТИЕ ДЛЯ МИКРО-ЭКРАНОВ (МЕНЬШЕ МИНИМУМА) --- */
+@media (max-width: 310px) {
     body {
-        padding: 4px;
-
+        padding: 2px;
     }
 
     .calculator-wrapper {
-        max-width: 300px;
-
+        max-width: 255px;
+        /* Предел физического сжатия калькулятора */
     }
 
     .calculator {
-        gap: 8px;
-
-        padding: 10px;
+        gap: 5px;
+        padding: 6px;
     }
 
-    .logo-img {
-        max-height: 70px;
+    #display:enabled {
+        height: 48px;
+    }
 
+    .calculator-wrapper::before {
+        height: 40px;
     }
 }
