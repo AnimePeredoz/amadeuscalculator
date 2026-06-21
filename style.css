@@ -346,8 +346,8 @@ body {
 
 /* Адаптивные настройки для самой PNG-картинки */
 .logo-img {
-    max-width: 70%;
-    max-height: 70%;
+    max-width: 60%;
+    max-height: 60%;
     object-fit: contain;
     /* Картинка сохранит свои пропорции и идеально впишется в размеры 300x54px */
 
