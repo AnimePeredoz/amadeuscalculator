@@ -21,7 +21,7 @@
     font-display: swap;
 }
 
-/* --- 2. ГЛОБАЛЬНЫЙ АДАПТИВ СБРОС --- */
+/* --- 2. ГЛОБАЛЬНЫЙ СБРОС И ЦЕНТРИРОВАНИЕ --- */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -32,8 +32,8 @@ body {
     width: 100%;
     min-height: 100vh;
     overflow: hidden;
-    /* Жестко запрещаем любой скролл */
-    padding: 6px;
+    /* Запрещаем скролл: калькулятор всегда адаптируется под экран */
+    padding: 10px;
 
     background:
         linear-gradient(rgba(255, 255, 255, 0.04) 50%,
@@ -106,144 +106,169 @@ body {
     text-align: center;
     font-family: 'calculator', sans-serif;
     font-style: oblique;
-    margin-bottom: 6px;
+    margin-bottom: 10px;
     color: #a6a6a6;
-    font-size: clamp(11px, 3vw, 15px);
+    font-size: clamp(12px, 2.5vw, 18px);
+    /* Шрифт подписи тоже растет */
 }
 
-/* --- 6. УЛЬТРА-АДАПТИВНАЯ ОБЕРТКА (Сжимается под любой экран) --- */
+/* --- 6. МОНОЛИТНАЯ РЕЗИНОВАЯ ОБЕРТКА (Растет вместе с экраном) --- */
 .calculator-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
-    /* На ПК ширина 360px. На мобилках плавно сжимается, оставляя безопасные отступы */
-    max-width: clamp(265px, 88vw, 360px);
+
+    /* ГЛАВНЫЙ СЕКРЕТ: Калькулятор теперь занимает 45% от высоты экрана на ПК, */
+    /* но на мобилках растягивается почти на всю ширину (до 90vw). Максимум ограничен 550px, чтобы не быть гигантским на ультрашироких мониторах */
+    width: clamp(280px, 90vw, 550px);
     position: relative;
 }
 
-/* --- 7. КОНТЕЙНЕР ДЛЯ СЖАТОГО ЛОГОТИПА --- */
+/* --- 7. КОНТЕЙНЕР ДЛЯ РАСТУЩЕГО ЛОГОТИПА --- */
 .logo-container {
     width: 100%;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    margin-top: 2px !important;
-    margin-bottom: 8px !important;
+    margin-top: 5px !important;
+    margin-bottom: 15px !important;
     padding: 0 !important;
     overflow: hidden !important;
 }
 
 .logo-img {
-    width: 70% !important;
-    /* Уменьшили базовую ширину картинки */
+    width: 80% !important;
+    /* Всегда занимает 80% от текущей ширины калькулятора */
     height: auto !important;
-    max-height: clamp(50px, 10vh, 90px) !important;
-    /* Логотип станет еще компактнее по вертикали */
+    max-height: clamp(60px, 15vh, 140px) !important;
+    /* Растет в высоту на больших мониторах */
     object-fit: contain !important;
-    filter: drop-shadow(0 0 5px #ff6600) drop-shadow(0 0 12px rgba(255, 51, 0, 0.4)) !important;
+    filter: drop-shadow(0 0 6px #ff6600) drop-shadow(0 0 15px rgba(255, 51, 0, 0.4)) !important;
     image-rendering: -webkit-optimize-contrast !important;
 }
 
-/* --- 8. ДИСПЛЕЙ (Уменьшенные внутренние зазоры) --- */
-#display:enabled {
-    border: 3.5px solid #3a2200;
-    border-radius: 10px;
-    /* Шрифт автоматически сжимается до 24px на самых крошечных экранах */
-    font-size: clamp(24px, 8vw, 44px);
-    font-family: 'calculator', monospace;
-    text-align: right;
-    padding: 6px 12px;
-    /* Компактные отступы внутри экрана */
-    width: 100%;
-    height: clamp(52px, 8.5vh, 75px);
-    /* Уменьшили высоту табло */
-    background-color: #050301;
-    background-image: none;
-    color: #ff6600;
-    font-weight: normal;
+/* --- 8. ДИСПЛЕЙ --- */
+/* --- ИСПРАВЛЕННЫЙ РЕЗИНОВЫЙ ДИСПЛЕЙ (Растет вместе с кнопками) --- */
+#display,
+#display:enabled,
+#display[readonly] {
+    /* Сбрасываем все скрытые ограничения браузеров для инпутов */
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    display: block !important;
+    box-sizing: border-box !important;
+
+    border: 4px solid #3a2200 !important;
+    border-radius: 12px !important;
+
+    /* ШРИФТ: теперь привязан к ширине калькулятора (vw), чтобы расти синхронно с кнопками */
+    font-size: clamp(24px, 11vw, 60px) !important;
+    font-family: 'calculator', monospace !important;
+    text-align: right !important;
+
+    /* ВЫСОТА И ШИРИНА: делаем их полностью зависимыми от общей сетки */
+    width: 100% !important;
+    height: clamp(55px, 20vw, 105px) !important;
+    /* Высота теперь четко привязана к vw, как и сетка кнопок! */
+    padding: 0px 20px !important;
+    line-height: clamp(55px, 20vw, 105px) !important;
+    /* Выравнивает текст строго по центру при росте */
+
+    background-color: #050301 !important;
+    background-image: none !important;
+    color: #ff6600 !important;
+    font-weight: normal !important;
+
     text-shadow:
         0 0 2px #ff3300,
-        0 0 6px #ff6600,
-        0 0 12px #ff9900,
-        0 0 20px rgba(255, 102, 0, 0.5);
+        0 0 8px #ff6600,
+        0 0 15px #ff9900,
+        0 0 25px rgba(255, 102, 0, 0.6) !important;
 
-    margin-bottom: 8px;
-    /* Минимальный зазор до кнопок */
+    margin-bottom: 15px !important;
+
     box-shadow:
-        inset 0 0 15px rgba(0, 0, 0, 0.9),
-        inset 0 0 10px rgba(255, 68, 0, 0.2),
-        0 3px 8px rgba(0, 0, 0, 0.5);
+        inset 0 0 20px rgba(0, 0, 0, 0.9),
+        inset 0 0 15px rgba(255, 68, 0, 0.2),
+        0 4px 10px rgba(0, 0, 0, 0.5) !important;
 
-    position: relative;
-    letter-spacing: 1px;
+    position: relative !important;
+    letter-spacing: 2px !important;
 }
 
-/* Сетка развертки (адаптирована под новую высоту) */
+/* Сетка развертки поверх дисплея (тоже жестко привязана к новой высоте) */
 .calculator-wrapper::before {
-    content: "";
-    position: absolute;
-    top: 4px;
-    left: 4px;
-    right: 4px;
-    height: calc(clamp(52px, 8.5vh, 75px) - 8px);
-    border-radius: 5px;
-    pointer-events: none;
-    z-index: 10;
+    content: "" !important;
+    position: absolute !important;
+    top: 4px !important;
+    left: 4px !important;
+    right: 4px !important;
+
+    /* Автоматически вычисляем высоту сетки, чтобы она росла вместе с дисплеем */
+    height: calc(clamp(55px, 20vw, 105px) - 8px) !important;
+
+    border-radius: 6px !important;
+    pointer-events: none !important;
+    z-index: 10 !important;
 
     background:
         linear-gradient(rgba(18, 18, 18, 0) 1px, rgba(0, 0, 0, 0.15) 1px),
-        linear-gradient(90deg, rgba(18, 18, 18, 0) 1px, rgba(0, 0, 0, 0.15) 1px);
-    background-size: 3px 3px;
+        linear-gradient(90deg, rgba(18, 18, 18, 0) 1px, rgba(0, 0, 0, 0.15) 1px) !important;
+    background-size: 3px 3px !important;
 
     background-image:
         linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 40%),
         linear-gradient(rgba(0, 0, 0, 0.1) 0px, rgba(0, 0, 0, 0) 1px),
-        linear-gradient(90deg, rgba(0, 0, 0, 0.1) 0px, rgba(0, 0, 0, 0) 1px);
-    background-size: 100% 100%, 3px 3px, 3px 3px;
+        linear-gradient(90deg, rgba(0, 0, 0, 0.1) 0px, rgba(0, 0, 0, 0) 1px) !important;
+    background-size: 100% 100%, 3px 3px, 3px 3px !important;
 }
 
-/* --- 9. СЕТКА КНОПОК (Максимально плотная) --- */
+
+/* --- 9. СЕТКА КНОПОК (Масштабируется бесконечно) --- */
 .calculator {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(5, 1fr);
-    gap: clamp(6px, 2vw, 10px);
-    /* Динамический зазор между кнопками */
+
+    /* Зазоры между кнопками плавно увеличиваются вместе с ростом экрана */
+    gap: clamp(6px, 2.5vw, 18px);
 
     width: 100%;
-    aspect-ratio: 4 / 4.4;
-    /* Слегка прижали сетку по вертикали */
+    aspect-ratio: 4 / 4.5;
+    /* Жестко держит пропорции сетки, заставляя её расти в высоту при росте в ширину */
 
     background-color: #0d0a07;
-    border: 4px solid #2b1a03;
-    border-radius: 10px;
-    padding: clamp(8px, 2.5vw, 12px);
-    /* Плотный внутренний отступ корпуса */
+    border: 5px solid #2b1a03;
+    border-radius: 12px;
+
+    /* Внутренние паддинги корпуса тоже увеличиваются */
+    padding: clamp(8px, 3vw, 22px);
 
     box-shadow:
-        0 12px 25px rgba(0, 0, 0, 0.8),
-        inset 0 0 12px rgba(0, 0, 0, 0.6);
+        0 15px 35px rgba(0, 0, 0, 0.8),
+        inset 0 0 15px rgba(0, 0, 0, 0.6);
 }
 
 /* --- 10. КНОПКИ --- */
 .btn {
-    border: 2px solid #592500 !important;
-    border-radius: 5px !important;
-    /* Острые компактные углы */
+    border: 2.5px solid #592500 !important;
+    border-radius: 8px !important;
 
     background-color: #050301 !important;
     color: #592500 !important;
     font-family: calculator, Impact, sans-serif !important;
-    /* Текст внутри кнопок теперь сжимается до компактных 16px */
-    font-size: clamp(16px, 5.5vw, 26px) !important;
+
+    /* Размер текста внутри кнопок увеличивается до 42px на больших мониторах */
+    font-size: clamp(16px, 6.5vw, 42px) !important;
     font-weight: bold !important;
     -webkit-text-stroke: transparent !important;
     text-shadow: none !important;
 
     box-shadow:
-        0 0 3px rgba(255, 102, 0, 0.1),
-        inset 0 0 3px rgba(255, 68, 0, 0.1) !important;
+        0 0 4px rgba(255, 102, 0, 0.15),
+        inset 0 0 4px rgba(255, 68, 0, 0.1) !important;
 
     display: flex !important;
     align-items: center !important;
@@ -262,18 +287,18 @@ body {
     color: #ff6600 !important;
     text-shadow:
         0 0 2px #ff3300,
-        0 0 5px #ff6600,
-        0 0 8px #ff9900 !important;
+        0 0 6px #ff6600,
+        0 0 12px #ff9900 !important;
 
     box-shadow:
-        0 0 3px #ff3300,
-        0 0 6px #ff6600,
-        0 0 10px rgba(255, 153, 0, 0.5),
-        inset 0 0 5px rgba(255, 68, 0, 0.4) !important;
+        0 0 4px #ff3300,
+        0 0 10px #ff6600,
+        0 0 18px rgba(255, 153, 0, 0.6),
+        inset 0 0 8px rgba(255, 68, 0, 0.4) !important;
 }
 
 .btn:active {
-    transform: scale(0.94) !important;
+    transform: scale(0.95) !important;
 }
 
 #btnr {
@@ -286,38 +311,21 @@ body {
     color: #ff6600 !important;
     text-shadow:
         0 0 2px #ff3300,
-        0 0 5px #ff6600,
-        0 0 10px #ff9900,
-        0 0 15px rgba(255, 102, 0, 0.5) !important;
+        0 0 6px #ff6600,
+        0 0 12px #ff9900,
+        0 0 20px rgba(255, 102, 0, 0.5) !important;
 
     font-family: calculator, 'Arial', sans-serif !important;
     font-weight: bold;
     -webkit-text-stroke: #000000 0.2px;
-    font-size: clamp(12px, 3.5vw, 18px);
+    font-size: clamp(12px, 3.5vw, 24px);
     transition: text-shadow 0.3s ease, color 0.3s ease;
 }
 
-/* --- 12. ЭКСТРЕННОЕ СЖАТИЕ ДЛЯ МИКРО-ЭКРАНОВ (МЕНЬШЕ МИНИМУМА) --- */
-@media (max-width: 310px) {
-    body {
-        padding: 2px;
-    }
-
-    .calculator-wrapper {
-        max-width: 255px;
-        /* Предел физического сжатия калькулятора */
-    }
-
-    .calculator {
-        gap: 5px;
-        padding: 6px;
-    }
-
-    #display:enabled {
-        height: 48px;
-    }
-
-    .calculator-wrapper::before {
-        height: 40px;
-    }
+.glow-text:hover {
+    color: #ffaa00 !important;
+    text-shadow:
+        0 0 2px #ff6600,
+        0 0 10px #ffaa00,
+        0 0 20px #ffffff !important;
 }
